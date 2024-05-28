@@ -1,0 +1,9 @@
+{
+    "numberOfSolarModules": 10,
+    "powerPerModule": 300,
+    "surface" : 30,
+    "location": {
+      "latitude": 52.520000,
+      "longitude": 13.405000
+    }
+  }

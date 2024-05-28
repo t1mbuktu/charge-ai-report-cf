@@ -1,0 +1,29 @@
+[
+    {
+      "id": "car1",
+      "name": "Auto1",
+      "hybrid": false,
+      "batteryLevel": 0.5,
+      "batteryCapacity": 62,
+      "chargeLimit": 1,
+      "maxChargeSpeed": 22,
+      "currentlyCharging": false,
+      "currentChargingSpeed": 0,
+      "currentSolarChargingSpeed": 0,
+      "currentGridChargingSpeed": 0
+    },
+    {
+      "id": "car2",
+      "name": "Auto2",
+      "hybrid": false,
+      "batteryLevel": 0.8,
+      "batteryCapacity": 50,
+      "chargeLimit": 1,
+      "maxChargeSpeed": 20,
+      "currentlyCharging": false,
+      "currentChargingSpeed": 0,
+      "currentSolarChargingSpeed": 0,
+      "currentGridChargingSpeed": 0
+    }
+
+]
