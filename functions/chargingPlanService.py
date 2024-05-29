@@ -29,7 +29,7 @@ class ChargingPlanService:
             for car_sim in sim_data:
                 if(car_sim["carId"] == car["id"]):
                     # Aufbau chargingPlan [[Datum und Uhrzeit, Speed Solar, Speed Grid, Battery LvL kwh, Battery Lvl % ],...]
-                    chargingPlan = list(map((lambda x: [x[0], None, None, None, None, x[1]]), solarEnergyForecast))
+                    chargingPlan = list(map((lambda x: [x["date"], None, None, None, None, x["speed_kwh"]]), returnData["solarForecast"]))
                     chargeTimeStart = datetime.strptime(solarEnergyForecast[0][0], '%Y-%m-%dT%H:%M')
                     batteryLevel_kwh = car["batteryCapacity"] * car["chargeLimit"] * car["batteryLevel"]
                     batteryLevel_per = batteryLevel_kwh / car["batteryCapacity"]
@@ -117,7 +117,7 @@ class ChargingPlanService:
             for car_sim in sim_data:
                 if(car_sim["carId"] == car["id"]):
                     # Aufbau chargingPlan [[Datum und Uhrzeit, Speed Solar, Speed Grid, Battery LvL kwh, Battery Lvl %, Solar Forecast],...]
-                    chargingPlan = list(map((lambda x: [x[0], None, None, None, None, x[1]]), solarEnergyForecast))
+                    chargingPlan = list(map((lambda x: [x["date"], None, None, None, None, x["speed_kwh"]]), returnData["solarForecast"]))
                     chargeTimeStart = datetime.strptime(solarEnergyForecast[0][0], '%Y-%m-%dT%H:%M')
                     batteryLevel_kwh = car["batteryCapacity"] * car["chargeLimit"] * car["batteryLevel"]
                     batteryLevel_per = batteryLevel_kwh / car["batteryCapacity"]
@@ -131,10 +131,11 @@ class ChargingPlanService:
                         # Berechnen der Solarleistung bis zur naechsten Abfahrt
                         for i, eForecast in enumerate(solarEnergyForecast):
                             if chargeTimeStart <= datetime.strptime(eForecast[0], '%Y-%m-%dT%H:%M') < departure:
+                                solarConsumable = min(energyNeeded, car["maxChargeSpeed"])
                                 
                                 # forecast[1] enstpricht der Solarleistung in der Stunde                             
-                                if(eForecast[1] > energyNeeded):
-                                    solarConsume = energyNeeded
+                                if(eForecast[1] > solarConsumable):
+                                    solarConsume = solarConsumable
                                 else:
                                     solarConsume = eForecast[1]
                                     
@@ -147,7 +148,7 @@ class ChargingPlanService:
                         for i, eForecast in enumerate(solarEnergyForecast):
                             if chargeTimeStart <= datetime.strptime(eForecast[0], '%Y-%m-%dT%H:%M') < departure:
                                 solarConsume = chargingPlan[i][1]
-                                gridConsumable = car["maxChargeSpeed"] - int(solarConsume)
+                                gridConsumable = car["maxChargeSpeed"] - float(solarConsume)
                                 
                                 if(gridConsumable > energyNeeded):
                                     gridConsume = energyNeeded
